@@ -24,12 +24,9 @@
     font-size: 20px;
   }
 </style>
-  <title>About CI/CD&nbsp;|&nbsp;Notablog</title>
+  <title>Powershell 设置代理&nbsp;|&nbsp;Notablog</title>
   <meta property="og:type" content="blog">
-  <meta property="og:title" content="About CI/CD">
-  
-    <meta name="description" content="url is not set for this post, so page id is used.">
-    <meta property="og:description" content="url is not set for this post, so page id is used.">
+  <meta property="og:title" content="Powershell 设置代理">
   
   
   <style>
@@ -90,25 +87,26 @@
     <div class="Header__Spacer Header__Spacer--NoCover">
     </div>
     
-    <h1 class="Header__Title">About CI/CD</h1>
+    <h1 class="Header__Title">Powershell 设置代理</h1>
     
       <div class="DateTagBar">
         
-          <span class="DateTagBar__Item DateTagBar__Date">Posted on Sat, Aug 17, 2019</span>
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Tue, Dec 26, 2023</span>
         
         
-          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--yellow">
-            <a href="tag/JS.html">JS</a>
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--brown">
+            <a href="tag/Windows.html">Windows</a>
           </span>
         
-          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--green">
-            <a href="tag/Web.html">Web</a>
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--brown">
+            <a href="tag/GFW.html">GFW</a>
           </span>
         
       </div>
     
   </header>
-  <article id="https://www.notion.so/cae14fe0db9e4caeac0921abc991b941" class="PageRoot"></article>
+  <article id="https://www.notion.so/1be7d5c4f58b4fe6b310eb242937e6b1" class="PageRoot"><div id="https://www.notion.so/53db4b094cfe48aaa3952f3eb801c942" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">查看代理</span></span></p></div><pre id="https://www.notion.so/9cd10f7fa9b3488495c6a3ce5616aaf8" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>netsh winhttp show proxy</span></span></span></code></pre><div id="https://www.notion.so/3afe88550e534d88aff7a5f04c3c4796" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">设置代理 (需要管理员权限)</span></span></p></div><pre id="https://www.notion.so/4d23d1a637894917a5ce112ac259f314" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>netsh winhttp <span class="token function">set</span> proxy 127<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>1:7890</span></span></span></code></pre><div id="https://www.notion.so/f146c842604d4c418c09cb18f275c8e3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">或者不需要代理的设置方式</span></span></p></div><pre id="https://www.notion.so/b9b1651dc95d40e195281b196cc66b2b" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token variable">$env</span>:HTTP_PROXY=<span class="token string">"http://127.0.0.1:7890"</span>
+<span class="token variable">$env</span>:HTTPS_PROXY=<span class="token string">"https://127.0.0.1:7890"</span></span></span></span></code></pre><div id="https://www.notion.so/bea313a5146b4fa9935f22a5424a8691" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">取消代理</span></span></p></div><pre id="https://www.notion.so/3e65afbb8ebf420686c9b9326629e958" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>netsh winhttp reset proxy</span></span></span></code></pre></article>
   <footer class="Footer">
   <div>&copy; Notablog 2022</div>
   <div>&centerdot;</div>
