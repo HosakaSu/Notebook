@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>交叉编译 procps&nbsp;|&nbsp;Notablog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="交叉编译 procps">
+  
+    <meta name="description" content="交叉编译procps-ng">
+    <meta property="og:description" content="交叉编译procps-ng">
+  
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📖&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="cross_compile_procps.html">
+        <div class="Navbar__Btn">
+          
+          <span>交叉编译 procps</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+    <h1 class="Header__Title">交叉编译 procps</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Mon, Dec 25, 2023</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--orange">
+            <a href="tag/linux.html">linux</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--red">
+            <a href="tag/embedded.html">embedded</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/462f307b7dfb4f4586965e158cee4705" class="PageRoot"><div id="https://www.notion.so/a8dbec5ed28a4d8786a45d495b477803" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">首先获取procps-ng-3.3.11 源码</span></span></p></div><pre id="https://www.notion.so/5985603e5cbb44dc81b29d24bf3b301e" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">wget</span> http://sourceforge.net/projects/procps-ng/files/Production/procps-ng-3.3.11.tar.xz
+<span class="token function">tar</span> <span class="token parameter variable">-xvf</span> procps-ng-3.3.11</span></span></span></code></pre><pre id="https://www.notion.so/995d7c9c6b1d4289916294006077a148" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token shebang important">#!/bin/bash</span>
+
+<span class="token assign-left variable">CROSS_COMPILE</span><span class="token operator">=</span>aarch64-none-linux-gnu-
+<span class="token assign-left variable">ARCH</span><span class="token operator">=</span>aarch64-none-linux-gnu
+<span class="token assign-left variable">TARGET_DIR</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">cd</span> `dirname $0`<span class="token punctuation">;</span> <span class="token builtin class-name">pwd</span><span class="token variable">)</span></span>/output
+<span class="token assign-left variable">CACHE_FILE</span><span class="token operator">=</span>aarch64.cache
+<span class="token function-name function">build_procps</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token builtin class-name">cd</span> procps-ng-3.3.11 <span class="token operator">&amp;&amp;</span> <span class="token function">mkdir</span> output
+    <span class="token builtin class-name">echo</span> <span class="token string">"ac_cv_func_realloc_0_nonnull=yes"</span> <span class="token operator">></span> <span class="token variable">$CACHE_FILE</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"ac_cv_func_malloc_0_nonnull=yes"</span> <span class="token operator">>></span> <span class="token variable">$CACHE_FILE</span>
+    ./configure <span class="token parameter variable">--host</span><span class="token operator">=</span><span class="token variable">$ARCH</span> <span class="token parameter variable">--prefix</span><span class="token operator">=</span><span class="token variable">$TARGET_DIR</span> <span class="token punctuation">\</span>
+        --enable-static <span class="token punctuation">\</span>
+        --disable-shared <span class="token punctuation">\</span>
+        --without-ncurses <span class="token punctuation">\</span>
+        --cache-file<span class="token operator">=</span><span class="token variable">$CACHE_FILE</span> <span class="token punctuation">\</span>
+
+        <span class="token assign-left variable">CC</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>gcc <span class="token punctuation">\</span>
+        <span class="token assign-left variable">STRIP</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>strip <span class="token punctuation">\</span>
+        <span class="token assign-left variable">RANLIB</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>ranlib <span class="token punctuation">\</span>
+        <span class="token assign-left variable">OBJDUMP</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>objdump <span class="token punctuation">\</span>
+        <span class="token assign-left variable">NM</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>nm <span class="token punctuation">\</span>
+        <span class="token assign-left variable">LD</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>ld <span class="token punctuation">\</span>
+        <span class="token assign-left variable">AR</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>ar <span class="token punctuation">\</span>
+        <span class="token assign-left variable">AS</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>as <span class="token punctuation">;</span>
+
+    <span class="token function">make</span> <span class="token punctuation">;</span> <span class="token function">make</span> <span class="token function">install</span> <span class="token operator">||</span> <span class="token builtin class-name">exit</span> <span class="token number">1</span>
+    <span class="token comment">#make || exit 1</span>
+    <span class="token builtin class-name">cd</span> -
+<span class="token punctuation">}</span>
+
+build_procps</span></span></span></code></pre><div id="https://www.notion.so/1a7a0356ee8e470f927070d7101ec445" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">交叉编译 sysstat</span></span></p></div><pre id="https://www.notion.so/b02ae10f4bc94a93bb82483ab9d0e70c" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">git</span> clone https://github.com/sysstat/sysstat.git</span></span></span></code></pre><pre id="https://www.notion.so/7f36f74abd57465ab43b3522a5aa5de7" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token shebang important">#!/bin/bash</span>
+
+<span class="token assign-left variable">CROSS_COMPILE</span><span class="token operator">=</span>aarch64-none-linux-gnu-
+<span class="token assign-left variable">ARCH</span><span class="token operator">=</span>aarch64-none-linux-gnu
+<span class="token assign-left variable">TARGET_DIR</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">cd</span> `dirname $0`<span class="token punctuation">;</span> <span class="token builtin class-name">pwd</span><span class="token variable">)</span></span>
+<span class="token function-name function">build_sysstat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token builtin class-name">cd</span> sysstat <span class="token operator">&amp;&amp;</span> <span class="token function">mkdir</span> output
+    ./configure <span class="token parameter variable">--host</span><span class="token operator">=</span><span class="token variable">$ARCH</span> <span class="token parameter variable">--prefix</span><span class="token operator">=</span><span class="token variable">$TARGET_DIR</span>/sysstat/output <span class="token punctuation">\</span>
+        <span class="token assign-left variable">CC</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>gcc <span class="token punctuation">\</span>
+        <span class="token assign-left variable">STRIP</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>strip <span class="token punctuation">\</span>
+        <span class="token assign-left variable">RANLIB</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>ranlib <span class="token punctuation">\</span>
+        <span class="token assign-left variable">OBJDUMP</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>objdump <span class="token punctuation">\</span>
+        <span class="token assign-left variable">NM</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>nm <span class="token punctuation">\</span>
+        <span class="token assign-left variable">LD</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>ld <span class="token punctuation">\</span>
+        <span class="token assign-left variable">AR</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>ar <span class="token punctuation">\</span>
+        <span class="token assign-left variable">AS</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span><span class="token punctuation">\</span>as <span class="token punctuation">;</span>
+
+    <span class="token function">make</span> <span class="token punctuation">;</span><span class="token function">sudo</span> <span class="token function">make</span> <span class="token function">install</span> <span class="token operator">||</span> <span class="token builtin class-name">exit</span> <span class="token number">1</span>
+    <span class="token comment">#make || exit 1</span>
+    <span class="token builtin class-name">cd</span> -
+<span class="token punctuation">}</span>
+
+<span class="token builtin class-name">echo</span> <span class="token variable">$TARGET_DIR</span>
+build_sysstat</span></span></span></code></pre><div id="https://www.notion.so/32684cdad4054988beef1f11b6046b6f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Notablog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
