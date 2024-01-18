@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📒&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>交叉编译Python&nbsp;|&nbsp;Notablog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="交叉编译Python">
+  
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📒&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌝&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+    <h1 class="Header__Title">交叉编译Python</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Thu, Jan 18, 2024</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--orange">
+            <a href="tag/linux.html">linux</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--red">
+            <a href="tag/embedded.html">embedded</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--purple">
+            <a href="tag/cross_compile.html">cross_compile</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/0350b666760e47fd9b271001c1814fe3" class="PageRoot"><div id="https://www.notion.so/61c1c4509e8749f28f78b6e3bfe70a75" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">以python 3.8.9 为例, 下载python </span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://www.python.org/downloads/source/">源码</a></span></span></p></div><div id="https://www.notion.so/2c657ae94b2349838fd9da5046290a32" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">首先要编译主机端Python</span></span></p></div><pre id="https://www.notion.so/7ed713ea3cc643a8aafef5977d4a7714" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>./configure <span class="token parameter variable">--prefix</span><span class="token operator">=</span><span class="token variable">${<span class="token environment constant">PWD</span>}</span>/host_pc_output --enable-optimizations
+<span class="token function">make</span> <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token function">install</span></span></span></span></code></pre><div id="https://www.notion.so/4c7fdafbf35c4022a28c24db1c407548" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">然后开始编译设备端python</span></span></p></div><div id="https://www.notion.so/90e55fb1a1e54c5fb4033faf58c789e2" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">首先交叉编译 zlib</span></span></p></div><pre id="https://www.notion.so/b9126aea3df141b98486f8018a71686f" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token builtin class-name">export</span> <span class="token assign-left variable">CC</span><span class="token operator">=</span>aarch64-none-linux-gnu-gcc
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">CROSS_PREFIX</span><span class="token operator">=</span>aarch64-none-linux-gnu-
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">CFLAGS</span><span class="token operator">=</span><span class="token string">"-Wall -g"</span>
+./configure <span class="token parameter variable">--prefix</span><span class="token operator">=</span><span class="token variable">${<span class="token environment constant">PWD</span>}</span>/output 
+<span class="token function">make</span> <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token function">install</span></span></span></span></code></pre><div id="https://www.notion.so/7484442adccd40f9af31f06f9b2dd46d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">交叉编译 libffi</span></span></p></div><pre id="https://www.notion.so/60f0a134852648949c7c5a601eb3c5ba" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>./configure <span class="token parameter variable">--prefix</span><span class="token operator">=</span><span class="token variable">${<span class="token environment constant">PWD</span>}</span>/output  <span class="token parameter variable">--host</span><span class="token operator">=</span>aarch64-none-linux-gnu <span class="token parameter variable">--target</span><span class="token operator">=</span>aarch64-none-linux-gnu <span class="token assign-left variable">CC</span><span class="token operator">=</span>aarch64-none-linux-gnu-gcc <span class="token assign-left variable">CXX</span><span class="token operator">=</span>aarch64-none-linux-gnu-g++ <span class="token assign-left variable">RANLIB</span><span class="token operator">=</span>aarch64-none-linux-gnu-ranlib <span class="token assign-left variable">STRIP</span><span class="token operator">=</span>aarch64-none-linux-gnu-strip <span class="token assign-left variable">AR</span><span class="token operator">=</span>aarch64-none-linux-gnu-ar <span class="token assign-left variable">CFLAGS</span><span class="token operator">=</span><span class="token string">"-Wall -g"</span> <span class="token assign-left variable">CPPFLAGS</span><span class="token operator">=</span><span class="token string">"-Wall -g"</span>
+<span class="token function">make</span> <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token function">install</span></span></span></span></code></pre><div id="https://www.notion.so/f5dcea2fa03946e8a2d1f63e145aca8a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">交叉编译</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/"> libressl</a></span></span></p></div><pre id="https://www.notion.so/5ec5de85ff204dea851924094ac992dd" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>./configure <span class="token parameter variable">--prefix</span><span class="token operator">=</span><span class="token variable">${<span class="token environment constant">PWD</span>}</span>/output <span class="token parameter variable">--host</span><span class="token operator">=</span>aarch64-none-linux-gnu
+<span class="token function">make</span> <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token function">install</span></span></span></span></code></pre><div id="https://www.notion.so/b6f38b9c3a6a4b9c8260daca45bfef23" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">然后开始交叉编译Python</span></span></p></div><pre id="https://www.notion.so/242d1c3df2ab42bbb80cbc7349b9082a" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>./configure <span class="token parameter variable">--prefix</span><span class="token operator">=</span><span class="token punctuation">\</span>$<span class="token punctuation">\</span><span class="token punctuation">{</span><span class="token environment constant">PWD</span><span class="token punctuation">\</span><span class="token punctuation">}</span>/device_output <span class="token parameter variable">--host</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span> <span class="token parameter variable">--build</span><span class="token operator">=</span>x86_64-pc-linux-gnu --disable-ipv6 <span class="token assign-left variable">CC</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span>-gcc <span class="token assign-left variable">CXX</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span>-g++ <span class="token assign-left variable">RANLIB</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span>-ranlib <span class="token assign-left variable">STRIP</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span>-strip <span class="token assign-left variable">AR</span><span class="token operator">=</span><span class="token variable">$CROSS_COMPILE</span>-ar <span class="token assign-left variable">LDFLAGS</span><span class="token operator">=</span><span class="token string">"-L/home/sirius/cross_compile/zlib-1.2.13/output/lib -L/home/sirius/cross_compile/libffi-3.4.4/output/lib64"</span> <span class="token assign-left variable">LIBS</span><span class="token operator">=</span><span class="token string">"-lz -lffi"</span> <span class="token assign-left variable">CFLAGS</span><span class="token operator">=</span><span class="token string">"-Wall -g -I/home/sirius/cross_compile/zlib-1.2.13/output/include -I/home/sirius/cross_compile/libffi-3.4.4/output/include"</span> <span class="token assign-left variable">CPPFLAGS</span><span class="token operator">=</span><span class="token string">"-Wall -g -I/home/sirius/cross_compile/zlib-1.2.13/output/include -I/home/sirius/cross_compile/libffi-3.4.4/output/include"</span> <span class="token assign-left variable">ac_cv_file__dev_ptmx</span><span class="token operator">=</span>no <span class="token assign-left variable">ac_cv_file__dev_ptc</span><span class="token operator">=</span>no --enable-optimizations --with-openssl<span class="token operator">=</span>/home/sirius/cross_compile/libressl-3.8.2/output</span></span></span></code></pre><div id="https://www.notion.so/927a3dce66d8416b8b57454471dd77da" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">安装pip</span></span></p></div><pre id="https://www.notion.so/d8e813bebbc645fca4a0988a4f1a762e" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">wget</span> https://bootstrap.pypa.io/get-pip.py</span></span></span></code></pre><div id="https://www.notion.so/6aed3d76f4c040ce996400f4d756f22f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">安装pip</span></span></p></div><pre id="https://www.notion.so/2598a35061ac4d7aa8684b8e62687957" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>python3 get-pip.py </span></span></span></code></pre><div id="https://www.notion.so/14de1e9672004b1f9ca3a9054053c687" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">如果有代理需要, —proxy=http://ip:port 即可</span></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Notablog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
