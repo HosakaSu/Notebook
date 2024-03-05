@@ -1,1 +1,126 @@
-The template name has zero length, please check the "template" field in your Notion table.
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📒&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>交叉编译 iproute2&nbsp;|&nbsp;Notablog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="交叉编译 iproute2">
+  
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📒&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌝&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+    <h1 class="Header__Title">交叉编译 iproute2</h1>
+    
+      <div class="DateTagBar">
+        
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Mon, Mar 4, 2024</span>
+        
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--orange">
+            <a href="tag/linux.html">linux</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--red">
+            <a href="tag/embedded.html">embedded</a>
+          </span>
+        
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--purple">
+            <a href="tag/cross_compile.html">cross_compile</a>
+          </span>
+        
+      </div>
+    
+  </header>
+  <article id="https://www.notion.so/c69857e9772e4cfe9b26a278fd8fc483" class="PageRoot"><div id="https://www.notion.so/006db88928444e328387e300175dbd0f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">下载iproute2 源码, 此处选择 版本号为5.9.0 的</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.9.0.tar.xz">源码</a></span></span></p></div><pre id="https://www.notion.so/d957863a818f4b18b9f35576adbd656a" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token function">tar</span> <span class="token parameter variable">-xvf</span> iproute2-5.9.0.tar.xz
+<span class="token builtin class-name">cd</span> iproute2-5.9.0 <span class="token operator">&amp;&amp;</span> <span class="token function">mkdir</span> output
+./configure <span class="token parameter variable">--prefix</span><span class="token operator">=</span>/home/sirius/cross_compile/iproute2-5.9.0/output <span class="token parameter variable">--host</span><span class="token operator">=</span>aarch64-none-linux-gnu</span></span></span></code></pre><div id="https://www.notion.so/664af5905897453c9dea2a2555fd3180" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">修改 Makefile 以及 </span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="http://config.mk">config.mk</a></span><span class="SemanticString"> 文件中的交叉编译器名称</span></span></p></div><div id="https://www.notion.so/79128d1773434b45a435ec7b5ca1a500" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="http://例如config.mk">例如config.mk</a></span><span class="SemanticString"> 中</span></span></p></div><pre id="https://www.notion.so/6602942e356c4d7f9478b84e9845dc93" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>AR:<span class="token operator">=</span>ar
+CC:<span class="token operator">=</span>gcc</span></span></span></code></pre><div id="https://www.notion.so/785bc82dd55643eb921c11782405dadd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">修改为</span></span></p></div><pre id="https://www.notion.so/2ecc6367c9da41d3bdbfcb814f949be9" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>AR:<span class="token operator">=</span>aarch64-none-linux-gnu-ar
+CC:<span class="token operator">=</span>aarch64-none-linux-gnu-gcc</span></span></span></code></pre><div id="https://www.notion.so/2d69be7a3f0b4a8abfb3c501c4c46bc1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Makefile 中SUBDIRS 仅保留 lib 和 ip</span></span></p></div><div id="https://www.notion.so/e800287a319c4178a8031ccde5621c02" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">然后执行make &amp;&amp; make install </span></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Notablog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
