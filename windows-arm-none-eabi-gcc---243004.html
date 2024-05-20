@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📒&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>windows arm-none-eabi-gcc  交叉编译环境以及固件烧写功能配置&nbsp;|&nbsp;Notablog</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="windows arm-none-eabi-gcc  交叉编译环境以及固件烧写功能配置">
+  
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;📒&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🌝&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About</span>
+        </div>
+      </a>
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+    <h1 class="Header__Title">windows arm-none-eabi-gcc  交叉编译环境以及固件烧写功能配置</h1>
+    
+  </header>
+  <article id="https://www.notion.so/243004ab09034a6d963a28a128f4f23a" class="PageRoot"><h1 id="https://www.notion.so/d8d69cecdc8e42f2812babbbcf15bd86" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/d8d69cecdc8e42f2812babbbcf15bd86"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><del class="SemanticString__Fragment SemanticString__Fragment--Strike">安装winget和gnu-make</del></span></span></h1><div id="https://www.notion.so/3f0d4b0b6da34d879254133a2c59bbe5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><del class="SemanticString__Fragment SemanticString__Fragment--Strike">winget 应该已经预装在windows11 内了，windows10 环境可以参考</del></span><span class="SemanticString"><del class="SemanticString__Fragment SemanticString__Fragment--Strike"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://sspai.com/post/67005">https://sspai.com/post/67005</a></del></span><span class="SemanticString"><del class="SemanticString__Fragment SemanticString__Fragment--Strike"> 这篇说明，我们需要用到winget安装gnu-make</del></span></span></p></div><div id="https://www.notion.so/d54873dc27724ee59185989d7e173174" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><del class="SemanticString__Fragment SemanticString__Fragment--Strike">winget安装完成后，打开powershell 输入 </del></span></span></p></div><pre id="https://www.notion.so/56868abe537d4d6f9cffe4776f93cc29" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>winget <span class="token function">install</span> GnuWin32.Make</span></span></span></code></pre><div id="https://www.notion.so/7902075b06524d1bb51611ee815df0de" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><del class="SemanticString__Fragment SemanticString__Fragment--Strike">按照提示完成安装后重新启动powershell ，输入make命令测试是否正常。</del></span></span></p></div><h1 id="https://www.notion.so/1c076284c19949ddb5f98864de324c8b" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/1c076284c19949ddb5f98864de324c8b"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">安装arm-none-eabi-gcc</span></span></h1><div id="https://www.notion.so/62b1e6f55eb2410196fc1ae7ff27f2ea" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads</a></span><span class="SemanticString"> 在这个页面，选择第一个下载安装</span></span></p></div><div id="https://www.notion.so/dfae688456594b558731eb3db044f5ad" class="Image Image--Normal"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fc510d6c6-8a26-4de6-8bbe-c545bd39bf6f%2FUntitled.png?width=517&amp;table=block&amp;id=dfae6884-5659-4b55-8731-eb3db044f5ad"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fc510d6c6-8a26-4de6-8bbe-c545bd39bf6f%2FUntitled.png?width=517&amp;table=block&amp;id=dfae6884-5659-4b55-8731-eb3db044f5ad" style="width:517px"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/ab6bf3c021d14b16beede8415f7544e8" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">安装完成后打开powershell, 输入 arm-none-eabi-gcc -v，检查打印信息是否正确。</span></span></p></div><h1 id="https://www.notion.so/31362019d0704d618cceb17489bf04d7" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/31362019d0704d618cceb17489bf04d7"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">安装pyocd</span></span></h1><div id="https://www.notion.so/8f75b977581b4215b650bccef212728a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">pyocd 对python版本要求在3.6以上，安装命令 </span></span></p></div><pre id="https://www.notion.so/de364f22d8eb4d51a8797aa15f5af046" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>pip <span class="token function">install</span> <span class="token parameter variable">-U</span> pyocd</span></span></span></code></pre><div id="https://www.notion.so/512b39f2b5d040ca877fb3ab7987ed77" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">pyocd 详细使用教程参考 </span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="http://www.51hei.com/bbs/dpj-194723-1.html">http://www.51hei.com/bbs/dpj-194723-1.html</a></span></span></p></div><div id="https://www.notion.so/c5567dd405634ba09a9d186401282c90" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">以stlink 下载器为例，stlink 驱动已正确安装，打开powershell 输入</span></span></p></div><pre id="https://www.notion.so/128439db7ea944c29e6c21de09fbc352" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>pyocd list </span></span></span></code></pre><div id="https://www.notion.so/56bf6c803bc24bab938e6c9f80d6cc27" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">应显示已连接的stlink 下载器信息</span></span></p></div><div id="https://www.notion.so/98abc600458241339f6c6dc7b204063f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">pyocd 下载固件需要下载对应型号单片机的pack包，可以使用pyocd pack install 命令，也可以在</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://www.keil.com/dd2/pack/">https://www.keil.com/dd2/pack/</a></span><span class="SemanticString"> 下载并手动加载。以stm32f407zg 为例</span></span></p></div><div id="https://www.notion.so/f975a2a7941645c384454fe19c6313f5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在线下载pack</span></span></p></div><pre id="https://www.notion.so/539c3c3e4e904738b4e2d97c893b5fe7" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>pyocd pack <span class="token function">install</span> stm32f407zg</span></span></span></code></pre><div id="https://www.notion.so/1127e5cf516341009d601d765a4ceefe" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">手动加载命令如下</span></span></p></div><pre id="https://www.notion.so/c164f3267fef415d9235cb627145c003" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>pyocd load —pack Keil.STM32F4xx_DFP.2.17.0.pack</span></span><span class="SemanticString"><em class="SemanticString__Fragment SemanticString__Fragment--Italic"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold"><span> </span></strong></em></span></span></code></pre><div id="https://www.notion.so/33aef49195c7415aaa21c7fe63e44293" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">需要注意的是，如选用手动加载，则每次执行固件烧写或擦除命令都需要带上load 参数</span></span></p></div><pre id="https://www.notion.so/90b9f8d7fddc4892ba73f49083e7e31c" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>pyocd load —pack Keil.STM32F4xx_DFP.2.17.0.pack</span></span><span class="SemanticString"><em class="SemanticString__Fragment SemanticString__Fragment--Italic"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold"><span> </span></strong></em></span><span class="SemanticString"><span>flash <span class="token parameter variable">-t</span> stm32f407zg app.hex</span></span></span></code></pre><h1 id="https://www.notion.so/01e8aa305de3477a8598258594a9f7c4" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/01e8aa305de3477a8598258594a9f7c4"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">固件烧写与擦除</span></span></h1><div id="https://www.notion.so/e8a7533e2db4431eaf70c5829cd8dc25" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">以stm32f407zgt6 为例</span></span></p></div><div id="https://www.notion.so/03b0ee9a1da045a389feec565a919393" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">烧写hex</span></span></p></div><pre id="https://www.notion.so/06cca308131f46d09b814291bee46a65" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>pyocd flash <span class="token parameter variable">-t</span> stm32f407zg app.hex</span></span></span></code></pre><div id="https://www.notion.so/3f8d5f59dc3d455ba30d4b28ebbb0902" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">烧写bin</span></span></p></div><pre id="https://www.notion.so/e62b2880418a47eb99150220a249c64f" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>pyocd flash <span class="token parameter variable">-t</span> stm32f407zg —base-address 0x8000000 app.bin</span></span></span></code></pre><div id="https://www.notion.so/2243cc238c874615aa09599435814ff6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">整片擦除</span></span></p></div><pre id="https://www.notion.so/b4b8fb3ccf7a40b6878c4ac0f2408e74" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>pyocd erase <span class="token parameter variable">-t</span> stm32f407zg —chip</span></span></span></code></pre><div id="https://www.notion.so/b470a861272b4091b01e486724d07954" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div><div id="https://www.notion.so/5ca2906a54eb48b28e6c1c303a871d5d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Notablog 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
