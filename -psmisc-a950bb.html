@@ -24,9 +24,9 @@
     font-size: 20px;
   }
 </style>
-  <title>交叉编译 minicom&nbsp;|&nbsp;Notablog</title>
+  <title>交叉编译 psmisc&nbsp;|&nbsp;Notablog</title>
   <meta property="og:type" content="blog">
-  <meta property="og:title" content="交叉编译 minicom">
+  <meta property="og:title" content="交叉编译 psmisc">
   
   
   <style>
@@ -93,31 +93,31 @@
     <div class="Header__Spacer Header__Spacer--NoCover">
     </div>
     
-    <h1 class="Header__Title">交叉编译 minicom</h1>
+    <h1 class="Header__Title">交叉编译 psmisc</h1>
     
       <div class="DateTagBar">
         
+          <span class="DateTagBar__Item DateTagBar__Date">Posted on Wed, Aug 21, 2024</span>
         
-          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--orange">
-            <a href="tag/linux.html">linux</a>
-          </span>
-        
-          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--red">
-            <a href="tag/embedded.html">embedded</a>
-          </span>
         
           <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--purple">
             <a href="tag/cross_compile.html">cross_compile</a>
           </span>
         
+          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--orange">
+            <a href="tag/linux.html">linux</a>
+          </span>
+        
       </div>
     
   </header>
-  <article id="https://www.notion.so/9346fa59b24a4908b66d4f22d2c56f4d" class="PageRoot"><div id="https://www.notion.so/8ddf4458e9424add88793ce7055d15f2" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">下载 minicom </span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://salsa.debian.org/minicom-team/minicom">源码</a></span></span></p></div><div id="https://www.notion.so/490acb9af8a84c0faeab9bf782f6133a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">首先要编译 ncurses</span></span></p></div><pre id="https://www.notion.so/32824e6b53ff45c9a0da42987713b342" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>./configure <span class="token assign-left variable">CC</span><span class="token operator">=</span><span class="token variable">$CC</span> <span class="token parameter variable">--prefix</span><span class="token operator">=</span><span class="token environment constant">$PWD</span>/output <span class="token parameter variable">--host</span><span class="token operator">=</span>aarch64-none-linux-gnu  
-    <span class="token assign-left variable">CPPFLAGS</span><span class="token operator">=</span><span class="token string">"-I /home/sirius/cross_compile/ncurses-6.4/output/include"</span>  
-    <span class="token assign-left variable">LDFLAGS</span><span class="token operator">=</span><span class="token string">"-L /home/sirius/cross_compile/ncurses-6.4/output//lib"</span>
-<span class="token function">make</span> 
-<span class="token function">make</span> <span class="token function">install</span></span></span></span></code></pre></article>
+  <article id="https://www.notion.so/a950bb8a423e42f1869ef7d4f9fd1649" class="PageRoot"><div id="https://www.notion.so/c72c0081fc3746ae9a3e3b6315b5bf9c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">首先编译 ncurses</span></span></p></div><div id="https://www.notion.so/6ce28755260b434b8213cc7b73a88e00" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">编译完成后,  记下ncurses 编译生成的include 和 lib路径分别添加到 CFLAGS 以及 LDFLAGS环境变量中</span></span></p></div><div id="https://www.notion.so/5ddd04478458432b90c2d6a46f65873c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">下载 psmisc </span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://gitlab.com/psmisc/psmisc/-/releases">源码</a></span></span></p></div><pre id="https://www.notion.so/b3a192d408cd40338a1c55e96b20d494" class="Code Code--NoWrap"><code><span class="SemanticStringArray"><span class="SemanticString"><span>wget https://gitlab.com/psmisc/psmisc/-/archive/v23.7/psmisc-v23.7.tar.gz
+tar -xvf psmisc-v23.7.tar.gz 
+cd psmisc-v23.7 &amp;&amp; ./autogen.sh
+mkdir -p output
+export CFLAGS += {}
+./configure --prefix={PWD}/output --host=aarch64-none-linux-gnu --libdir={ncurses lib 路径} --includedir={ncurses include 路径}
+make</span></span></span></code></pre><div id="https://www.notion.so/7a7e222e33be40d19392365c8699e5c9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">此时会遇到找不到curses.h 以及 term.h 的报错, 将缺少的头文件拷贝至psmisc/src/ 下即可</span></span></p></div><div id="https://www.notion.so/47bf76bb0767474a86acaec55309dc0c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">最后 </span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">make install</code></span></span></p></div><div id="https://www.notion.so/bcf30d878d2c4df1bd8f71ddad065264" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"></span></p></div></article>
   <footer class="Footer">
   <div>&copy; Notablog 2022</div>
   <div>&centerdot;</div>
